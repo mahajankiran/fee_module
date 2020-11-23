@@ -1,0 +1,122 @@
+<div class="container">
+    <div class="img-svg">
+        <img src="/images/assgn4.svg " width="650 " height="650 " alt="assgn4 " />
+    </div>
+    <div class="formcontainer">
+        <h1 class="heading">Register</h1>
+
+        <form>
+            <label class="enroll">
+        <input
+          type="text"
+          placeholder="Enter Enrollment no "
+          name="studid"
+          spellcheck="false"
+        />
+      </label>
+            <div class="enrollment_error"></div>
+
+            <label class="user">
+        <input
+          type="text"
+          placeholder="Enter Name "
+          name="name"
+
+          spellcheck="false"
+        />
+      </label>
+
+            <div class="name_error">
+
+            </div>
+            <label class="email">
+        <input
+          type="email"
+          placeholder="Enter Email"
+          name="email"
+          spellcheck="false"
+        />
+
+      </label>
+
+            <div class="email_error">
+
+            </div>
+
+            <label class="password">
+        <input
+          type="password"
+          placeholder="Enter Password "
+          name="password"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </label>
+
+            <div class="password_error">
+
+            </div>
+
+            <button class="loginbtn">Submit</button>
+            <div>
+                <p class="member">Alreday have an account ?</p>
+                <h4 class="signin">
+                    <a href="/student/login "> Login here.</a>
+                </h4>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    const form = document.querySelector('form');
+    const emailError = document.querySelector('.email_error');
+    const passwordError = document.querySelector('.password_error');
+    const nameError = document.querySelector('.name_error');
+    const enrollmentError = document.querySelector('.enrollment_error');
+
+    emailError.textContent = ''
+    nameError.textContent = ''
+    passwordError.textContent = ''
+    enrollmentError.textContent = ''
+
+    form.addEventListener('submit', async(e) => {
+        e.preventDefault();
+        // reset errors
+        // get values
+        const email = form.email.value;
+        const password = form.password.value;
+        const name = form.name.value;
+        const studid = form.studid.value;
+        try {
+            const res = await fetch('/student/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                    studid,
+                    name,
+                    email,
+                    password,
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await res.json();
+
+            console.log('in register')
+            console.log(data);
+            if (data.errors) {
+                enrollmentError.textContent = data.errors.id_error;
+                console.log(enrollmentError.textContent);
+                console.log(data.errors);
+
+
+
+            }
+            if (data.studid) {
+                location.assign('/student/studentdashboard');
+            }
+        } catch (err) {
+            throw err;
+        }
+    });
+</script>
