@@ -146,7 +146,7 @@ input:hover {
 }
 
 .enroll::before {
-    content: "\f14b";
+    content: "\f303";
     top: 37px;
     position: absolute;
     left: 30px;
@@ -155,9 +155,9 @@ input:hover {
     font-variant: normal;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome\ 5 Free";
     z-index: 100;
-    font-weight: 400;
+    font-weight: 700;
     color: #898bd1;
     transition: 0.3s all ease-in-out;
 }

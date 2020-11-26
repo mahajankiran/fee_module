@@ -1,42 +1,51 @@
-    .wrapper {
-        width: 80%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 70vh;
-        margin: 100px auto;
-    }
-    
-    .student,
-    .admin {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 50%;
-        height: 30vh;
-        margin: 0 30px;
-        border-radius: 10px;
-    }
-    
-    .student {
-        background: #C364FA;
-    }
-    
-    .admin {
-        background: #6B00D7;
-    }
-    
-    .rlbuttons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-    }
-    
-    .rlbuttons button {
-        margin: 30px;
-        background: white;
-        border: none;
-        padding: 10px;
-        width: 70px;
-    }
+.wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    /* margin: 100px auto; */
+    background: #f0f0f0;
+}
+
+.student,
+.admin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    height: 50vh;
+    margin: 0 30px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    box-shadow: 20px 20px 60px #cccccc, -20px -20px 60px #ffffff;
+}
+
+
+/* .student {
+    background: #C364FA;
+}
+
+.admin {
+    background: #6B00D7;
+} */
+
+.rlbuttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.rlbuttons button a {
+    text-decoration: none;
+}
+
+.rlbuttons button {
+    margin: 30px;
+    background: white;
+    border: none;
+    padding: 10px;
+    width: 100px;
+    border-radius: 5px;
+}

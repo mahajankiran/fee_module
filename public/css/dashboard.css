@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    /* background: #d7ecf5; */
+    /* fallback for old browsers */
+}
+
+.st-dashboard-nav {
+    display: flex;
+    width: 50%;
+    margin: 20px;
+}
+
+.st-dashboard-button {
+    border: none;
+    color: #000;
+    margin: 0 20px;
+}
+
+.st-dashboard-button a {
+    text-decoration: none !important;
+}
+
+.options-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 50vh;
+    margin: 100px auto;
+    /* background: #000; */
+}
+
+.options-section button {
+    margin: 0 20px;
+    width: 210px;
+    height: 100px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options-section button a {
+    text-decoration: none;
+}
+
+.options-section button a i {
+    margin: 0 10px;
+}

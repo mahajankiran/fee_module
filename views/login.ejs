@@ -1,4 +1,4 @@
-<div class="formcontainer">
+<!-- <div class="formcontainer">
     <h1 class="heading">Login</h1>
 
     <form method="POST" action="/student/login">
@@ -21,7 +21,7 @@
         spellcheck="false"
       />
     </label>
-        <div class="password error"></div>
+        <div class="password_error"></div>
 
         <button class="loginbtn">Submit</button>
         <div>
@@ -31,11 +31,35 @@
             </h4>
         </div>
     </form>
+</div> -->
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Login</h1>
+            <form>
+                <div class="form-group">
+                    <label for="enroll">Enrollment no</label>
+                    <input type="text" id="" name="studid" class="form-control" placeholder="Enter Enrollment no" />
+                </div>
+                <div class="id error"></div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" />
+                </div>
+                <div class="password_error"></div>
+
+                <button type="submit" class="btn btn-primary btn-block">Login </button>
+            </form>
+            <p class="lead mt-4">
+                No Account? <a href="/student/register">Register</a>
+            </p>
+        </div>
+    </div>
 </div>
 <script>
     const form = document.querySelector('form');
     const enrollmentError = document.querySelector('.id.error');
-    const passwordError = document.querySelector('.password.error');
+    const passwordError = document.querySelector('.password_error');
     enrollmentError.textContent = '';
     passwordError.textContent = '';
 
@@ -58,10 +82,9 @@
             });
             const data = await res.json();
 
-            console.log('in login')
 
             if (data.user) {
-                console.log(data.user);
+                console.log('logged in')
 
                 location.assign('/student/studentdashboard');
             } else {

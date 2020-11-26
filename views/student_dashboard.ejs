@@ -1,1 +1,20 @@
-<h1>Students Dashboard</h1>
+<div class="st-dashboard-nav">
+
+    <% if(user){ %>
+        <h4>
+            Hello,
+            <%=user.stud_name%>
+        </h4>
+        <% }%>
+
+            <button class="st-dashboard-button"><a href="/student/logout">Logout</a></button>
+
+</div>
+
+<div class="options-section">
+    <button><a href="/student/basicinfo"><i class="fa fa-id-card" aria-hidden="true"></i>Enter Basic details</a></button>
+    <button><a href="/student/payment"><i class="fa fa-money" aria-hidden="true"></i>Pay fees</a></button>
+    <button><a href="/student/scholarship"><i class="fa fa-file-text" aria-hidden="true"></i> Apply for scholarship</a></button>
+    <button><a href="/student/workshop"><i class="fa fa-users" aria-hidden="true"></i> Participate in Workshop</a></button>
+
+</div>
