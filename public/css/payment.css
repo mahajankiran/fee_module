@@ -1,0 +1,9 @@
+.pay-btn {
+    background: #6A0DAD !important;
+    color: #fff;
+    outline: none;
+    border: none;
+    width: 100px;
+    height: 50px;
+    border-radius: 5px;
+}

@@ -1,7 +1,11 @@
 const bcrypt = require("bcrypt");
 const mysqlConnection = require("../connection");
 const jwt = require('jsonwebtoken');
-
+const pdf = require('html-pdf');
+const fileSaver = require('file-saver');
+const pdfTemplate =require('../documents/document.js');
+const stripe = require('stripe')('sk_test_51HsAN1DWAYQVTPQ4xbjaH373UXUq59nyf1UsgoviyRdWLcgvdszqoRyoHM6QKPWSMRGZfjMz1jDRvdZTkDOdHbuH00LXYouZVB')
+const path  =require('path'); 
 const maxAge = 2 * 24 * 60 * 60;
 
 const createToken = (id) => {
@@ -76,6 +80,22 @@ module.exports.register_post = (req, res) => {
 
 
                         } else {
+                            let data2 = [
+                                [studid]
+                            ]
+                            let stmt2 = `INSERT INTO academic_payment(stud_id) VALUE ?`;
+                            mysqlConnection.query(stmt2, [data2], (err, result, field) => {
+
+                                if (err) {
+                                    console.log('eror in inserting intopayment table')
+                                    throw err;
+
+                                } else {
+                                    console.log('inserted into payment table');
+
+                                }
+
+                            })
                             const token = createToken(studid);
                             console.log("User saved in database " + result);
                             res.cookie('jwt', token, {
@@ -173,8 +193,24 @@ module.exports.get_student_logout = (req, res) => {
 
 module.exports.get_student_fee_payment = (req, res) => {
 
+    const { user } = res.locals;
+    const { stud_id } = user;
+    let stmt = 'SELECT stud_id,stud_name,category,year ,tution_fee,university_fee,development_fee,fees_paid,fees_status FROM student NATURAL JOIN fee_structure NATURAL JOIN academic_payment WHERE stud_id=? ;'
+    mysqlConnection.query(stmt, [stud_id], (err, result, field) => {
+        if (err) {
+            console.log('Error in fetching users info')
+            throw err;
 
-    res.render("payment");
+        } else {
+            console.log('get_student_fee_payment');
+            result[0].fileSaver=fileSaver;
+            const user_info = result[0];
+            console.log(user_info)
+            res.render("payment", user_info);
+
+        }
+    })
+
 
 
 
@@ -188,34 +224,25 @@ module.exports.get_student_fee_payment = (req, res) => {
 
 module.exports.get_student_basic_details = (req, res) => {
 
-
-    res.render("basic_info");
-
-
-
-
-
-
+   res.render("basic_info");
 }
+
 module.exports.post_student_basic_details = (req, res) => {
 
-    let stmt = 'UPDATE student SET address=? WHERE stud_id=?';
-
-
-    // const { user } = res.locals;
+    let stmt = 'UPDATE student SET address=? ,category=?,year=? WHERE stud_id=?';
     const { user } = res.locals;
-
-
-    mysqlConnection.query(stmt, [req.body.address, user], (err, result, field) => {
+    const { stud_id } = user;
+    mysqlConnection.query(stmt, [req.body.address, req.body.category, req.body.year, stud_id], (err, result, field) => {
 
         if (err) {
             console.log(err);
             const errors = { "success": 0 }
+            res.json(errors);
         } else {
 
-
-            res.json(
-                user)
+            res.json({
+                stud_id
+            });
 
 
         }
@@ -226,5 +253,90 @@ module.exports.post_student_basic_details = (req, res) => {
 
 
 
+
+}
+
+
+module.exports.fee_pay_details = (req, res) => {
+
+
+
+    console.log(req.body.price)
+    const price = req.body.price;
+
+
+
+    stripe.charges.create({
+        amount: price,
+        source: req.body.stripeTokenId,
+        currency: 'inr'
+    }).then(function() {
+        const { user } = res.locals;
+        const { stud_id } = user
+        ;
+        const database_price = price / 100;
+
+        let stmt = 'UPDATE academic_payment SET fees_status=1,acad_pay_amount=?,transaction_date=NOW(),fees_paid=? WHERE stud_id=?'
+        mysqlConnection.query(stmt, [database_price, database_price, stud_id], (err, result, field) => {
+
+            if (err) {
+
+                console.log('Error in making payment');
+                console.log(err);
+                console.log('Charge Fail')
+                res.status(500).end()
+
+            } else {
+
+                res.json({ message: 'Successfully  paid fees' })
+
+
+
+
+
+            }
+
+
+
+        })
+    }).catch(function() {
+        console.log('Charge Fail')
+        res.status(500).end()
+    })
+
+
+}
+
+module.exports.download_fee_receipts =(req,res)=>{
+
+
+
+    let stmt ='SELECT * FROM student NATURAL JOIN academic_payment';
+    console.log('In download')
+    mysqlConnection.query(stmt,(err,result,field)=>{
+        if(err)
+        {
+                 console.log(err);
+                 res.json({"message":"Failed to download receipt"})
+        }
+        else{
+            console.log(result[0]);
+           pdf.create(pdfTemplate(result[0]), {}).toFile(`/${result[0].stud_name}.pdf`, (err,file) => {
+            if(err) {
+                console.log(err);
+        }
+        else{
+
+        // res.send(Promise.resolve());
+        console.log(file);
+         res.sendFile(`/${__dirname}/${result[0].stud_name}.pdf`);
+      
+        }
+  
+    });
+
+        }
+
+    })
 
 }

@@ -3,6 +3,7 @@ const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const ejsLint = require('ejs-lint');
 
 
 

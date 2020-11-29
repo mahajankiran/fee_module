@@ -16,7 +16,7 @@ const authRequire = (req, res, next) => {
                 res.redirect('/');
 
             } else {
-                // console.log(decodedToken);
+                console.log('In auth require ');
                 next();
             }
 
@@ -52,7 +52,7 @@ const checkUser = (req, res, next) => {
 
                     } else {
                         console.log('In check')
-                        res.locals.user = result[0].stud_id;
+                        res.locals.user = result[0];
                         console.log(res.locals);
                         next();
                     }

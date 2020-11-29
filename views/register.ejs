@@ -87,7 +87,7 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" />
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                <button type="submit" class="btn btn-success btn-block">Register</button>
             </form>
             <p class="lead mt-4">
                 Already have an account? <a href="/student/login">Login</a>
@@ -132,17 +132,19 @@
 
             console.log('in register')
             console.log(data);
-            if (data.errors) {
+            if (data) {
+                if (data.errors) {
 
-                enrollmentError.textContent = data.errors.id_error;
-                console.log(enrollmentError.textContent);
-                console.log(data.errors);
+                    enrollmentError.textContent = data.errors.id_error;
+                    console.log(enrollmentError.textContent);
+                    console.log(data.errors);
 
 
 
-            }
-            if (data.studid) {
-                location.assign('/student/studentdashboard');
+                }
+                if (data.studid) {
+                    location.assign('/student/studentdashboard');
+                }
             }
         } catch (err) {
             throw err;

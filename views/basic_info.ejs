@@ -38,7 +38,6 @@
 
     form.addEventListener('submit', async(e) => {
         e.preventDefault();
-
         const category = form.category.value;
         const year = form.year.value;
         const address = form.address.value;
@@ -55,25 +54,32 @@
                     'Content-Type': 'application/json'
                 }
             });
+
+
             const data = await res.json();
 
             console.log('in basic info response')
             console.log(data);
-            if (data.errors) {
-                console.log('error in submitting form ')
+
+            if (data) {
+                if (data.errors) {
+
+
+                    console.log('error in submitting form ')
 
 
 
 
-            }
-            if (data.user) {
-                console.log(data.user)
+                }
+                if (data.stud_id) {
 
-                location.assign('/student/studentdashboard');
+                    location.assign('/student/studentdashboard');
 
+                }
             }
         } catch (err) {
             throw err;
         }
+
     });
 </script>
