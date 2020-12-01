@@ -99,10 +99,10 @@ module.exports = ({stud_id, stud_name, email, fees_paid,transaction_date }) => {
                           <table>
                              <tr>
                                 <td>
-                                   Student name: ${stud_name}
+                                   <h1>Student name:<h1> ${stud_name}
                                 </td>
                                 <td>
-                                   Student name: ${stud_id}
+                                   <h1>Student ID:<h1> ${stud_id}
                                 </td>
                                
                              </tr>
@@ -110,11 +110,10 @@ module.exports = ({stud_id, stud_name, email, fees_paid,transaction_date }) => {
                        </td>
                     </tr>
                     <tr class="heading">
-                       <td>Bought items:</td>
-                       <td>Price</td>
+                       <td>Academic fee</td>
                     </tr>
                     <tr class="item">
-                       <td>First item:</td>
+                       <td>Total fee paid:</td>
                        <td>${fees_paid}$</td>
                     </tr>
                 

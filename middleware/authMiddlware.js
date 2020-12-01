@@ -5,6 +5,8 @@ const mysqlConnection = require("../connection");
 const authRequire = (req, res, next) => {
 
     const token = req.cookies.jwt;
+    console.log(token);
+
 
     if (token) {
 
@@ -21,7 +23,8 @@ const authRequire = (req, res, next) => {
             }
 
         })
-    } else {
+    }
+     else {
         res.redirect('/');
 
 
@@ -68,15 +71,53 @@ const checkUser = (req, res, next) => {
     }
 }
 
+const checkAdmin = (req, res, next) => {
+    const token = req.cookies.adminjwt;
+    if (token) {
 
-const UpdateUserInfo = (req, res, next) => {
+        jwt.verify(token, 'secretkey', (err, decodedToken) => {
 
+            if (err) {
+                console.log(err);
+                res.locals.user = null;
+
+                next();
+            } else {
+                let stmt = 'SELECT * FROM admin WHERE admin_id=?'
+
+                mysqlConnection.query(stmt, [decodedToken.id], (err, result, field) => {
+
+                    if (err) {
+                        console.log('Student not found')
+                        res.locals.user = null;
+                        next();
+
+                    } else {
+                        console.log('In check')
+                        res.locals.user = result[0];
+                        console.log(res.locals);
+                        next();
+                    }
+
+                })
+
+            }
+
+        })
+
+    } else {
+
+    }
 }
+
+
+
+
 
 
 
 
 module.exports = {
     authRequire,
-    checkUser
+    checkUser,checkAdmin
 };

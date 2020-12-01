@@ -5,8 +5,6 @@ if(price_element!=null)
 {
 price  =parseInt(price_element.value);
 }
-const fees_status = document.getElementById("helper").getAttribute("data-fees_status");
-const fileSaver = document.getElementById("helper").getAttribute("data-filesaver_module");
 
 
 

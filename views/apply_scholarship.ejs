@@ -1,0 +1,48 @@
+<div class="st-dashboard-nav">
+
+    <% if(user){ %>
+        <h4>
+            Hello,
+            <%=user.stud_name%>
+        </h4>
+        <% }%>
+
+            <button class="st-dashboard-button"><a href="/student/logout">Logout</a></button>
+           
+            
+
+</div>
+<div class="container mt-5 ">
+    <div class="row mt-5 scholarship-container">
+        <% for(var i=0;i<scholarship.length;i++){ %>
+    
+        <input type="radio"  name="scholarship" value="<%= scholarship[i].scholarship_name%>"><%= scholarship[i].scholarship_name %>
+        
+        <%} %>
+    </div>
+    <button class="apply-btn" id="apply-btn">Apply</button>
+</div>
+<script defer> 
+window.onload = function() {
+const applyBtn = document.getElementById('apply-btn');
+    applyBtn.addEventListener('click',()=>{
+
+
+        const scholarship_id_selected=0;
+    
+        var ele = document.getElementsByTagName('input'); 
+          
+        for(i = 0; i < ele.length; i++) { 
+              
+            if(ele[i].type="radio") { 
+              
+                if(ele[i].checked) 
+                scholarship_id_selected=i+1;
+               
+            } 
+        } 
+    
+
+    })}
+</script> 
+
