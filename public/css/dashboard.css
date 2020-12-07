@@ -9,8 +9,15 @@ body {
 
 .st-dashboard-nav {
     display: flex;
-    width: 50%;
-    margin: 20px;
+    padding:10px;
+    width: 100%;
+    /* margin: 20px; */
+    background: #22242A !important;
+
+}
+
+.st-dashboard-nav h4{
+    color:#fff;
 }
 
 .st-dashboard-button {
@@ -24,10 +31,14 @@ body {
 }
 
 .options-section {
-    display: flex;
+    display:grid;
+    
+    grid-template-columns: repeat(2,1fr);
     justify-content: center;
     align-items: center;
-    width: 80%;
+    /* align-content: center; */
+    justify-items: center;
+    width: 20%;
     height: 50vh;
     margin: 100px auto;
     /* background: #000; */
@@ -36,17 +47,22 @@ body {
 .options-section button {
     margin: 0 20px;
     width: 210px;
-    height: 100px;
+    height: 180px;
     border: none;
     border-radius: 5px;
     outline: none;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #355C7D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #C06C84, #6C5B7B, #355C7D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #C06C84, #6C5B7B, #355C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .options-section button a {
     text-decoration: none;
+    color:#fff;
 }
 
 .options-section button a i {
@@ -100,7 +116,16 @@ body {
 
 }
 
-.scholarship-container{
+/* .scholarship-container{
     display:flex !important;
     flex-direction: column !important;
+} */
+
+button {
+    background: #9ab3f5;
+}
+
+a{
+    color:#fff  !important;
+
 }

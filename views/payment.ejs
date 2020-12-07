@@ -9,7 +9,7 @@
         var stripePublicKey = 'pk_test_51HsAN1DWAYQVTPQ4eWz2JY015J0XKeKF37Njm3dSSpAECTsHaoiItS82ssLnEksXTtmWGMYnqlhdArrkt206FzyG00OvpUN4GH';
         
     </script>
-    <script src="/js/payment.js"  defer></script>
+    <script src="/js/payment.js"  id="helper" data-fees_status="<%= fees_status %>" defer></script>
     
 
 
@@ -28,7 +28,7 @@
                 <button class="st-dashboard-button"><a href="/student/logout">Logout</a></button>
 
     </div>
-    <div class="container">
+    <div class="container mt-5">
         <table class="table table-striped table-dark">
             <thead>
                 <tr>
@@ -55,13 +55,12 @@
 
         <div class="row mt-5">
             <div class="col-md-12  ">
-                <table class="table  table-striped table-hover table-bordered">
+                <table class="table  table-striped table-dark table-bordered">
                     <thead>
                         <tr>
                             <th>Fee Type</th>
                             <th>Expected fee
                             </th>
-                            <th>Paid Fee amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,21 +71,7 @@
                             <td>
                                 <%= tution_fee %>
                             </td>
-                            <% if(fees_status){ %>
-
-                                <td>
-                                    <%= tution_fee %>
-
-
-                                </td>
-                                <%} else{%>
-
-                                    <td>
-                                        <%= fees_paid %>
-
-
-                                    </td>
-                                    <% } %>
+                          
 
 
                         </tr>
@@ -98,19 +83,7 @@
                             <td>
                                 <%= university_fee %>
                             </td>
-                            <% if(fees_status){ %>
-
-                                <td>
-                                    <%= university_fee %>
-
-                                </td>
-                                <%} else{%>
-                                    <td>
-                                        <%= fees_paid %>
-
-                                    </td>
-
-                                    <% }%>
+                            
 
 
 
@@ -124,20 +97,6 @@
                             <td>
                                 <%= development_fee %>
                             </td>
-                            <% if(fees_status){ %>
- 
-                            <td>
-                                <%= development_fee %>
-
-
-                            </td>
-                            <%} else{%>
-                                <td>
-                                    <%= fees_paid %>
-
-                                </td>
-
-                                <% }%>
 
                         </tr>
 
@@ -147,9 +106,14 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Total Amount</th>
+                                <th>Total Amount(with scholarship)</th>
                                 <th>
-                                    <input type="text" readonly="readonly" name="pay_amount" id="fee_amount" value="<%= university_fee+development_fee+tution_fee %>" />
+                                    <input type="text" readonly="readonly" name="pay_amount" id="fee_amount" value="<%= acad_pay_amount %>" />
+
+                                </th>
+                                <th>Fees paid</th>
+                                <th>
+                                <input type="text" readonly="readonly" name="pay_amount" id="fee_amount" value="<% if(fees_status==1){%> <%= acad_pay_amount %> <%} else{%> 0 <%}%>" />
 
                                 </th>
 

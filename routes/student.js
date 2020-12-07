@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authControllers");
 const {  authRequire,checkUser } = require("../middleware/authMiddlware");
-const { route } = require("./admin");
 
 router.get("/register", authController.register_get);
 
@@ -31,6 +30,7 @@ router.post("/basicinfo", authController.post_student_basic_details);
 router.post("/pay_fee", authController.fee_pay_details);
 router.get("/download_fee_receipt", authController.download_fee_receipts);
 router.get("/applyscholarship",authController.student_get_scholarship_form );
+router.post("/student_applyscholarship",authController.student_applied_scholarship_post );
 
 
 module.exports = router;

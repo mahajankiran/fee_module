@@ -1,74 +1,21 @@
-<!-- <div class="container">
+<div class="st-dashboard-nav mb-5">
 
-    <div class="formcontainer">
-        <h1 class="heading">Register</h1>
+    <% if(user){ %>
+        <h4>
+            Hello,Admin
+            <%=user.admin_id%>
+        </h4>
+        <% }%>
 
-        <form>
-            <label class="enroll">
-        <input
-          type="text"
-          placeholder="Enter Enrollment no "
-          name="studid"
-          spellcheck="false"
-        />
-      </label>
-            <div class="enrollment_error"></div>
+            <button class="st-dashboard-button"><a href="/admin/logout">Logout</a></button>
+           
+            
 
-            <label class="user">
-        <input
-          type="text"
-          placeholder="Enter Name "
-          name="name"
-
-          spellcheck="false"
-        />
-      </label>
-
-            <div class="name_error">
-
-            </div>
-            <label class="email">
-        <input
-          type="email"
-          placeholder="Enter Email"
-          name="email"
-          spellcheck="false"
-        />
-
-      </label>
-
-            <div class="email_error">
-
-            </div>
-
-            <label class="password">
-        <input
-          type="password"
-          placeholder="Enter Password "
-          name="password"
-          autocomplete="off"
-          spellcheck="false"
-        />
-      </label>
-
-            <div class="password_error">
-
-            </div>
-
-            <button class="loginbtn">Submit</button>
-            <div>
-                <p class="member">Alreday have an account ?</p>
-                <h4 class="signin">
-                    <a href="/student/login "> Login here.</a>
-                </h4>
-            </div>
-        </form>
-    </div>
-</div> -->
+</div>
 <div class="row mt-5">
     <div class="col-md-4 m-auto">
         <div class="card register-card card-body">
-            <h1 class="text-center mb-3">Register</h1>
+            <h3 class="text-center mb-3">Add Student Record</h3>
             <form>
                 <div class="form-group">
                     <label for="enroll">Enrollment no</label>
@@ -82,16 +29,21 @@
                 <div class="form-group">
                     <label for="name">Email</label>
                     <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" />
+                </div><div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" class="form-control" placeholder="Enter category" />
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="year">Admission year</label>
+                    <input type="number" id="year" name="year" class="form-control" placeholder="Enter Admission year" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Set password for student</label>
                     <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" />
                 </div>
-                <button type="submit" class="btn  btn-success btn-block">Register</button>
+                <button type="submit" class="btn  btn-success btn-block">Add</button>
             </form>
-            <p class="lead mt-4">
-               <span class="member" > Already have an account? </span><a class="signin" style="color:aquamarine" href="/student/login">Login</a>
-            </p>
+          
         </div>
     </div>
 </div>
@@ -115,14 +67,17 @@
         const password = form.password.value;
         const name = form.name.value;
         const studid = form.studid.value;
+        const category = form.category.value;
+        const year = form.year.value;
         try {
-            const res = await fetch('/student/register', {
+            const res = await fetch('/admin/add_student_record_post', {
                 method: 'POST',
                 body: JSON.stringify({
                     studid,
                     name,
                     email,
                     password,
+                    category,year
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -143,7 +98,7 @@
 
                 }
                 if (data.studid) {
-                    location.assign('/student/studentdashboard');
+                    res.send('Added successfully')
                 }
             }
         } catch (err) {

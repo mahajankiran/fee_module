@@ -4,8 +4,7 @@ const jwt = require('jsonwebtoken');
 const pdf = require('html-pdf');
 const pdfTemplate =require('../documents/document.js');
 const stripe = require('stripe')('sk_test_51HsAN1DWAYQVTPQ4xbjaH373UXUq59nyf1UsgoviyRdWLcgvdszqoRyoHM6QKPWSMRGZfjMz1jDRvdZTkDOdHbuH00LXYouZVB')
-const path  =require('path'); 
-const maxAge = 2 * 24 * 60 * 60;
+const maxAge = 2*24*60*60 ;
 
 const createToken = (id) => {
 
@@ -81,7 +80,7 @@ module.exports.admin_login_post = (req, res) => {
 
 module.exports.get_student_applied_for_scholarship=(req,res)=>{
 
-    let stmt ='SELECT stud_name,stud_id,scholarship_name,scholarship_status FROM student NATURAL JOIN applied_scholarship NATURAL JOIN scholarship';
+    let stmt ='SELECT stud_name,stud_id,scholarship_name,scholarship_status,scholarship_id FROM student NATURAL JOIN applied_scholarship NATURAL JOIN scholarship';
 
     mysqlConnection.query(stmt,(err,result,field)=>{
         if(err)
@@ -103,7 +102,7 @@ module.exports.get_student_applied_for_scholarship=(req,res)=>{
 
 module.exports.handle_students_scholarship=(req,res)=>{
    const id=req.params.id;
-   let stmt='SELECT stud_name,stud_id,scholarship_name,scholarship_status FROM student NATURAL JOIN applied_scholarship NATURAL JOIN scholarship WHERE stud_id=?'
+   let stmt='SELECT stud_name,stud_id,scholarship_name,scholarship_status FROM student NATURAL JOIN applied_scholarship NATURAL JOIN scholarship WHERE stud_id=? and scholarship_status=0'
    mysqlConnection.query(stmt,[id],(err,result,field)=>{
        if(err)
        console.log(err);
@@ -131,6 +130,119 @@ module.exports.approve_scholarship=(req,res)=>{
     })
  }
 
+ module.exports.get_student_info =(req,res)=>{
+    
+    let stmt='SELECT stud_id,stud_name,year,fees_status FROM student NATURAL JOIN academic_payment;'
+
+    mysqlConnection.query(stmt,(err,result,field)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+             
+            res.render("get_student_info",{result:result})
+        }
+
+    })
+
+ }
+
+
+ module.exports.add_student_record =(req,res)=>{
+
+    res.render("add_student_record")
+
+ }
+
+ module.exports.add_student_record_post =(req,res)=>{
+
+    const errors = {
+        id_error: " ",
+        pass_error: " ",
+    }
+
+
+    const { studid, name, email, password,category,year } = req.body;
+
+
+    bcrypt.genSalt(10, function(err, salt) {
+
+        if (err) {
+            console.log('Error in creating salt');
+            throw err;
+        } else {
+            bcrypt.hash(password, salt, (err, hash) => {
+
+
+                if (err) {
+                    console.log("Password hashing failed");
+                    throw err;
+                } else {
+                    let data = [
+                        [name, email, hash, studid,category,year]
+                    ];
+
+
+                    let stmt = `INSERT INTO student(stud_name,email,password,stud_id,category,year) VALUES ?`;
+                    mysqlConnection.query(stmt, [data], (err, result, field) => {
+                        if (err) {
+c 
+                            if (err.errno === 1062)
+                                errors.id_error = "Student alreday exists in database";
+                            errors.pass_error = ""
+                            res.json({ "success": 0, errors });
+
+
+
+
+                        } else {
+                            // let data2 = [
+                            //     [studid]
+                            // ]
+                            // let data3 = [
+                            //     [studid,3,0]                         
+                            
+                            // ]
+                            // let stmt2 = `INSERT INTO academic_payment(stud_id) VALUE ?`;
+                            // let stmt3=`INSERT INTO applied_scholarship VALUE ?`
+                            // mysqlConnection.query(stmt2, [data2], (err, result, field) => {
+
+                            //     if (err) {
+                            //         console.log('eror in inserting intopayment table')
+                            //         throw err;
+
+                            //     } else {
+                            //         console.log('inserted into payment table');
+                            //         mysqlConnection.query(stmt3, [data3], (err, result, field) => {
+
+                            //             if (err) {
+                            //                 console.log('eror in inserting into applied table table')
+                            //                 throw err;
+        
+                            //             } else {
+                            //                 console.log('inserted into applied table table');
+        
+                            //             }
+        
+                            //         })
+
+                            //     }
+
+                            // })
+                            
+                            res.json({ studid })
+
+                        }
+                    });
+                }
+            });
+        }
+    })
+    
+
+
+ }
 
 module.exports.register_get = (req, res) => {
     res.render("register");
@@ -183,39 +295,39 @@ module.exports.register_post = (req, res) => {
 
 
                         } else {
-                            let data2 = [
-                                [studid]
-                            ]
-                            let data3 = [
-                                [studid,3,0]                         
+                            // let data2 = [
+                            //     [studid]
+                            // ]
+                            // let data3 = [
+                            //     [studid,3,0]                         
                             
-                            ]
-                            let stmt2 = `INSERT INTO academic_payment(stud_id) VALUE ?`;
-                            let stmt3=`INSERT INTO applied_scholarship VALUE ?`
-                            mysqlConnection.query(stmt2, [data2], (err, result, field) => {
+                            // ]
+                            // let stmt2 = `INSERT INTO academic_payment(stud_id) VALUE ?`;
+                            // let stmt3=`INSERT INTO applied_scholarship VALUE ?`
+                            // // mysqlConnection.query(stmt2, [data2], (err, result, field) => {
 
-                                if (err) {
-                                    console.log('eror in inserting intopayment table')
-                                    throw err;
+                            //     if (err) {
+                            //         console.log('eror in inserting intopayment table')
+                            //         throw err;
 
-                                } else {
-                                    console.log('inserted into payment table');
-                                    mysqlConnection.query(stmt3, [data3], (err, result, field) => {
+                            //     } else {
+                                    // console.log('inserted into payment table');
+                                    // mysqlConnection.query(stmt3, [data3], (err, result, field) => {
 
-                                        if (err) {
-                                            console.log('eror in inserting into applied table table')
-                                            throw err;
+                                    //     if (err) {
+                                    //         console.log('eror in inserting into applied table table')
+                                    //         throw err;
         
-                                        } else {
-                                            console.log('inserted into applied table table');
+                                    //     } else {
+                                    //         console.log('inserted into applied table table');
         
-                                        }
+                                    //     }
         
-                                    })
+                                    // })
 
-                                }
+                            //     }
 
-                            })
+                            // })
                             
                             const token = createToken(studid);
                             console.log("User saved in database " + result);
@@ -326,7 +438,7 @@ module.exports.get_student_fee_payment = (req, res) => {
 
     const { user } = res.locals;
     const { stud_id } = user;
-    let stmt = 'SELECT stud_id,stud_name,category,year ,tution_fee,university_fee,development_fee,fees_paid,fees_status FROM student NATURAL JOIN fee_structure NATURAL JOIN academic_payment WHERE stud_id=? ;'
+    let stmt = 'SELECT stud_id,stud_name,category,year ,tution_fee,university_fee,development_fee,fees_paid,fees_status,acad_pay_amount FROM student NATURAL JOIN fee_structure NATURAL JOIN academic_payment WHERE stud_id=? ;'
     mysqlConnection.query(stmt, [stud_id], (err, result, field) => {
         if (err) {
             console.log('Error in fetching users info')
@@ -491,4 +603,27 @@ module.exports.student_get_scholarship_form =(req,res)=>{
         }
 
     })
+}
+
+
+module.exports.student_applied_scholarship_post =(req,res)=>{
+    const {user}=res.locals;
+    const{stud_id}=user;
+    const scholarship_id=req.body.scholarship_id_selected;
+    let data=[scholarship_id,stud_id];
+
+    let stmt='UPDATE applied_scholarship SET scholarship_id=? WHERE stud_id=?;'
+    mysqlConnection.query(stmt,data,(err,result,field)=>{
+        if(err)
+        {
+            console.log(err);
+
+        }
+        else
+        {
+            console.log(result);
+        }
+
+    })
+    
 }

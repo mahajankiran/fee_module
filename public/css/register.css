@@ -99,7 +99,7 @@ input:hover {
 
 .signin {
     display: inline-block;
-    color: #1f4068;
+    color: #1f4068 !important;
     text-decoration: none;
     cursor: pointer;
     font-size: 18px;
