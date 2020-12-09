@@ -294,7 +294,9 @@ module.exports.register_post = (req, res) => {
 
 
 
-                        } else {
+                        } else 
+                        {
+                            
                             // let data2 = [
                             //     [studid]
                             // ]
@@ -335,7 +337,7 @@ module.exports.register_post = (req, res) => {
                                 httpOnly: true,
                                 maxAge: maxAge * 1000
                             })
-                            res.json({ studid })
+                            res.json({ studid });
 
                         }
                     });
