@@ -68,7 +68,7 @@
         const name = form.name.value;
         const studid = form.studid.value;
         const category = form.category.value;
-        const year = form.year.value;
+        const year = parseInt(form.year.value);
         try {
             const res = await fetch('/admin/add_student_record_post', {
                 method: 'POST',
@@ -77,7 +77,8 @@
                     name,
                     email,
                     password,
-                    category,year
+                    category,
+                    year
                 }),
                 headers: {
                     'Content-Type': 'application/json'

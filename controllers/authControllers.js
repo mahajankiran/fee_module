@@ -1,3 +1,4 @@
+'use strict'
 const bcrypt = require("bcrypt");
 const mysqlConnection = require("../connection");
 const jwt = require('jsonwebtoken');
@@ -179,61 +180,26 @@ module.exports.approve_scholarship=(req,res)=>{
                     console.log("Password hashing failed");
                     throw err;
                 } else {
-                    let data = [
+                    let data1 = [
                         [name, email, hash, studid,category,year]
+                    ];
+                    let data2 = [
+                        [ studid,3,0]
                     ];
 
 
-                    let stmt = `INSERT INTO student(stud_name,email,password,stud_id,category,year) VALUES ?`;
-                    mysqlConnection.query(stmt, [data], (err, result, field) => {
+                    let stmt1 = `INSERT INTO student(stud_name,email,password,stud_id,category,year) VALUE ?`;
+
+                    mysqlConnection.query(stmt1, [data1], (err, result, field) => {
                         if (err) {
-c 
-                            if (err.errno === 1062)
-                                errors.id_error = "Student alreday exists in database";
-                            errors.pass_error = ""
-                            res.json({ "success": 0, errors });
 
-
-
-
-                        } else {
-                            // let data2 = [
-                            //     [studid]
-                            // ]
-                            // let data3 = [
-                            //     [studid,3,0]                         
+                            console.log(err);
+                           }
+                            else {
                             
-                            // ]
-                            // let stmt2 = `INSERT INTO academic_payment(stud_id) VALUE ?`;
-                            // let stmt3=`INSERT INTO applied_scholarship VALUE ?`
-                            // mysqlConnection.query(stmt2, [data2], (err, result, field) => {
+                                    res.json({ studid })
 
-                            //     if (err) {
-                            //         console.log('eror in inserting intopayment table')
-                            //         throw err;
-
-                            //     } else {
-                            //         console.log('inserted into payment table');
-                            //         mysqlConnection.query(stmt3, [data3], (err, result, field) => {
-
-                            //             if (err) {
-                            //                 console.log('eror in inserting into applied table table')
-                            //                 throw err;
-        
-                            //             } else {
-                            //                 console.log('inserted into applied table table');
-        
-                            //             }
-        
-                            //         })
-
-                            //     }
-
-                            // })
-                            
-                            res.json({ studid })
-
-                        }
+                         }
                     });
                 }
             });
@@ -243,6 +209,40 @@ c
 
 
  }
+
+ module.exports.add_fee_structure =(req,res)=>{
+
+    res.render("fee_structure")
+
+ }
+
+ module.exports.add_fee_structure_post =(req,res)=>{
+
+ 
+    const {year,category,tution_fee,development_fee,university_fee}=req.body
+     
+
+    let stmt='INSERT INTO  fee_structure(category,year,tution_fee,development_fee,university_fee) VALUE?'
+    let data=[[category,year,tution_fee,development_fee,university_fee]];
+    mysqlConnection.query(stmt,[data],(err,result,field)=>{
+        if(err)
+        {
+            console.log(err);
+            res.json({
+                "success":0,
+                "message":"Failed to add fee_structure"
+            })
+        }
+        else{
+            res.json({
+                "success":1,
+                "message":"Successfully added new fee structure"
+            })
+
+        }
+    })
+ }
+
 
 module.exports.register_get = (req, res) => {
     res.render("register");
@@ -618,11 +618,19 @@ module.exports.student_applied_scholarship_post =(req,res)=>{
     mysqlConnection.query(stmt,data,(err,result,field)=>{
         if(err)
         {
+            res.json({
+                "success":0,
+                "message":"Failed to apply for scholarship !"
+            })
             console.log(err);
 
         }
         else
         {
+            res.json({
+                "success":1,
+                "message":"Successfully applied for scholarship !"
+            })
             console.log(result);
         }
 

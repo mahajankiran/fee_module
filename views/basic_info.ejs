@@ -1,3 +1,19 @@
+
+    <div class="st-dashboard-nav">
+
+        <% if(user){ %>
+            <h4>
+                Hello,
+                <%=user.stud_name%>
+            </h4>
+            <% }%>
+
+                <button class="st-dashboard-button"><a href="/student/logout">Logout</a></button>
+
+    </div>
+
+    <!-- <div class="content"></div> -->
+    
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
         <div class="card card-body">
@@ -17,7 +33,7 @@
                     <input type="text" id="year" name="year" class="form-control" placeholder="Enter Addmission year" />
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                <button type="submit" class="btn btn-success btn-block">Submit</button>
             </form>
 
         </div>

@@ -27,9 +27,13 @@
 
     </div>
     <button class="apply-btn" id="apply-btn">Apply</button>
+    <div class="success"></div>
+
 </div>
+
 <script defer> 
 window.onload = function() {
+
 const applyBtn = document.getElementById('apply-btn');
     applyBtn.addEventListener('click',async()=>{
 
@@ -63,13 +67,13 @@ const applyBtn = document.getElementById('apply-btn');
             console.log('in approve')
             console.log(data);
            
-                if (data.success==0) {
+                if (!data.success) {
 
 
 
 
                 }
-                if (data.success==1) {
+                else {
                     successvalue.textContent='Updated successfully !';
                     console.log(success.value);
                 }
